@@ -1,6 +1,6 @@
 [project]
 name = "json-criteria"
-version = "0.0.1"
+version = "0.0.1-alpha"
 authors = [
   { name="Matthew Fay" },
 ]
