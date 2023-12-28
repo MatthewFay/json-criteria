@@ -35,6 +35,6 @@ def satisfies_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
     if operator == 'less_than_or_equal_to':
         return record.get(key) <= value
     if operator == 'in':
-        return value in record.get(key)
+        return record.get(key) in value
 
     raise ValueError(f'Invalid operator: {operator}')
