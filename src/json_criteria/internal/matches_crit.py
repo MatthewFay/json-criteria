@@ -1,15 +1,15 @@
 from typing import Dict, Any
 
-def satisfies_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
+def matches_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
     # TODO: `element` validation
 
     # AND, OR, NOT operators
     if 'AND' in element:
-        return all(satisfies_crit(record, el) for el in element.get('AND', []))
+        return all(matches_crit(record, el) for el in element.get('AND', []))
     if 'OR' in element:
-        return any(satisfies_crit(record, el) for el in element.get('OR', []))
+        return any(matches_crit(record, el) for el in element.get('OR', []))
     if 'NOT' in element:
-        return not satisfies_crit(record, element.get('NOT', {}))
+        return not matches_crit(record, element.get('NOT', {}))
 
     # Conditions
     key = element.get('key')
