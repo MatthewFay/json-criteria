@@ -1,1 +1,1 @@
-from .satisfies_criteria import satisfies_criteria
+from .matches_criteria import matches_criteria
