@@ -1,7 +1,19 @@
 from typing import Dict, Any
 
 def matches_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
-    # TODO: `element` validation
+    """
+    Internal function to check if a record matches the given criteria.
+
+    Parameters:
+    - record (Dict[str, Any]): The data record.
+    - element (Dict[str, Any]): The element of the criteria.
+
+    Returns:
+    - bool: Whether or not the record matches the criteria.
+    """
+
+    if not isinstance(element, dict):
+        raise ValueError('Invalid element: must be a dictionary')
 
     # AND, OR, NOT operators
     if 'AND' in element:
@@ -16,12 +28,10 @@ def matches_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
     operator = element.get('op')
     value = element.get('value')
 
-    if not isinstance(key, str):
-        raise ValueError(f'Invalid key: {key}')
+    if not isinstance(key, str) or not operator or value is None:
+        raise ValueError(f'Invalid condition: {element}')
 
-    if value is None:
-        raise ValueError(f'Invalid value: {value}')
-
+    # Operator conditions
     if operator == 'equal_to':
         return record.get(key) == value
     if operator == 'not_equal_to':
