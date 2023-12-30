@@ -134,7 +134,7 @@ class TestMeetsCrit(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             meets_crit(record, criteria)
         
-        self.assertEqual(str(context.exception), 'Invalid key: 1')
+        self.assertEqual(str(context.exception), 'Invalid condition: {\'key\': 1, \'op\': \'greater_than\', \'value\': 0}')
 
     def test_invalid_value(self):
         record = { 'id': 1 , 'email': 'test@email.com', 'is_active': True }
@@ -149,7 +149,7 @@ class TestMeetsCrit(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             meets_crit(record, criteria)
         
-        self.assertEqual(str(context.exception), 'Invalid value: None')
+        self.assertEqual(str(context.exception), 'Invalid condition: {\'key\': \'id\', \'op\': \'greater_than\', \'value\': None}')
 
     def test_not_equal_to_false(self):
         record = { 'name': 'Joe' , 'age': 30 }
