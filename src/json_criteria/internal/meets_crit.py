@@ -1,15 +1,15 @@
 from typing import Dict, Any
 
-def matches_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
+def meets_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
     """
-    Internal function to check if a record matches the given criteria.
+    Internal function to check if a record meets the given criteria.
 
     Parameters:
     - record (Dict[str, Any]): The data record.
     - element (Dict[str, Any]): The element of the criteria.
 
     Returns:
-    - bool: Whether or not the record matches the criteria.
+    - bool: Whether or not the record meets the criteria.
     """
 
     if not isinstance(element, dict):
@@ -17,11 +17,11 @@ def matches_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
 
     # AND, OR, NOT operators
     if 'AND' in element:
-        return all(matches_crit(record, el) for el in element.get('AND', []))
+        return all(meets_crit(record, el) for el in element.get('AND', []))
     if 'OR' in element:
-        return any(matches_crit(record, el) for el in element.get('OR', []))
+        return any(meets_crit(record, el) for el in element.get('OR', []))
     if 'NOT' in element:
-        return not matches_crit(record, element.get('NOT', {}))
+        return not meets_crit(record, element.get('NOT', {}))
 
     # Conditions
     key = element.get('key')
