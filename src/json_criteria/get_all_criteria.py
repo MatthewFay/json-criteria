@@ -3,7 +3,7 @@ from .internal import meets_crit
 
 def get_all_criteria(record: Dict[str, Any], criteria_list: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
-    Gets all criteria that a record meets.
+    Given a record and a list of criteria, get all criteria that the record meets.
 
     Parameters:
     - record (Dict[str, Any]): The data record.
