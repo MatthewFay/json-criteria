@@ -1,4 +1,6 @@
 from typing import Dict, Any
+from datetime import datetime
+import re
 
 def meets_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
     """
@@ -46,5 +48,53 @@ def meets_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
         return record.get(key) <= value
     if operator == 'in':
         return record.get(key) in value
+    if operator == 'contains':
+        return value in record.get(key)
+    if operator == 'starts_with':
+        return record.get(key, '').startswith(value)
+    if operator == 'ends_with':
+        return record.get(key, '').endswith(value)
+    # if operator == 'is_empty':
+    #     return not bool(record.get(key))
+    # if operator == 'is_not_empty':
+    #     return bool(record.get(key))
+    # if operator == 'is_true':
+    #     return bool(record.get(key))
+    # if operator == 'is_false':
+    #     return not bool(record.get(key))
+    # if operator == 'is_null':
+    #     return record.get(key) is None
+    # if operator == 'is_not_null':
+    #     return record.get(key) is not None
+    if operator == 'matches_regex':
+        return re.search(value, str(record.get(key))) is not None
+    # if operator == 'equals_ignore_case':
+    #     return record.get(key, '').lower() == value.lower()
+    # if operator == 'not_equals_ignore_case':
+    #     return record.get(key, '').lower() != value.lower()
+    # if operator == 'is_date':
+    #     try:
+    #         parsed_date = datetime.strptime(record.get(key, ''), '%Y-%m-%d')
+    #         return True
+    #     except ValueError:
+    #         return False
+    # if operator == 'date_equal_to':
+    #     try:
+    #         parsed_date = datetime.strptime(record.get(key, ''), '%Y-%m-%d')
+    #         return parsed_date == value
+    #     except ValueError:
+    #         return False
+    # if operator == 'date_before':
+    #     try:
+    #         parsed_date = datetime.strptime(record.get(key, ''), '%Y-%m-%d')
+    #         return parsed_date < value
+    #     except ValueError:
+    #         return False
+    # if operator == 'date_after':
+    #     try:
+    #         parsed_date = datetime.strptime(record.get(key, ''), '%Y-%m-%d')
+    #         return parsed_date > value
+    #     except ValueError:
+    #         return False
 
     raise ValueError(f'Invalid operator: {operator}')
