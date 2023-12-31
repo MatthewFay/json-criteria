@@ -1,12 +1,12 @@
 import unittest
 
-from src.json_criteria.internal import matches_crit
+from src.json_criteria.internal import meets_crit
 
-class TestMatchesCrit(unittest.TestCase):
+class TestMeetsCrit(unittest.TestCase):
     def test_basic(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = { 'key': 'age', 'op': 'equal_to', 'value': 30 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_basic2(self):
@@ -16,7 +16,7 @@ class TestMatchesCrit(unittest.TestCase):
             {'key': 'name', 'op': 'equal_to', 'value': 'Joe' }
             ]
         }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_basic3(self):
@@ -26,19 +26,19 @@ class TestMatchesCrit(unittest.TestCase):
             {'key': 'name', 'op': 'equal_to', 'value': 'Joe' }
             ]
         }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
     def test_single_cond_true(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'equal_to', 'value': 30 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_single_cond_false(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'equal_to', 'value': 29 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
     def test_AND_true(self):
@@ -49,7 +49,7 @@ class TestMatchesCrit(unittest.TestCase):
             {'key': 'is_active', 'op': 'equal_to', 'value': True }
             ]
         }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_AND_false(self):
@@ -60,7 +60,7 @@ class TestMatchesCrit(unittest.TestCase):
             {'key': 'is_active', 'op': 'equal_to', 'value': False }
             ]
         }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
     def test_OR_true(self):
@@ -70,7 +70,7 @@ class TestMatchesCrit(unittest.TestCase):
             {'key': 'email', 'op': 'equal_to', 'value': 'test@email.com' },
             ]
         }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_OR_false(self):
@@ -80,19 +80,19 @@ class TestMatchesCrit(unittest.TestCase):
             {'key': 'is_active', 'op': 'equal_to', 'value': False },
             ]
         }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
     def test_NOT_true(self):
         record = { 'id': 1 , 'email': 'test@email.com', 'is_active': True }
         criteria = { 'NOT': {'key': 'id', 'op': 'greater_than', 'value': 1 } }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_NOT_false(self):
         record = { 'id': 1 , 'email': 'test@email.com', 'is_active': True }
         criteria = { 'NOT': {'key': 'id', 'op': 'greater_than', 'value': 0 } }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
     def test_combination_1_true(self):
@@ -105,7 +105,7 @@ class TestMatchesCrit(unittest.TestCase):
                 ]
             }
         }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_combination_1_false(self):
@@ -118,7 +118,7 @@ class TestMatchesCrit(unittest.TestCase):
                 ]
             }
         }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
     def test_invalid_key(self):
@@ -132,9 +132,9 @@ class TestMatchesCrit(unittest.TestCase):
             }
         }
         with self.assertRaises(ValueError) as context:
-            matches_crit(record, criteria)
+            meets_crit(record, criteria)
         
-        self.assertEqual(str(context.exception), 'Invalid key: 1')
+        self.assertEqual(str(context.exception), 'Invalid condition: {\'key\': 1, \'op\': \'greater_than\', \'value\': 0}')
 
     def test_invalid_value(self):
         record = { 'id': 1 , 'email': 'test@email.com', 'is_active': True }
@@ -147,80 +147,80 @@ class TestMatchesCrit(unittest.TestCase):
             }
         }
         with self.assertRaises(ValueError) as context:
-            matches_crit(record, criteria)
+            meets_crit(record, criteria)
         
-        self.assertEqual(str(context.exception), 'Invalid value: None')
+        self.assertEqual(str(context.exception), 'Invalid condition: {\'key\': \'id\', \'op\': \'greater_than\', \'value\': None}')
 
     def test_not_equal_to_false(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'not_equal_to', 'value': 30 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
     def test_not_equal_to_true(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'not_equal_to', 'value': 300 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_greater_than_true(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'greater_than', 'value': 5 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_greater_than_false(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'greater_than', 'value': 35 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
     def test_greater_than_or_equal_to_true(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'greater_than_or_equal_to', 'value': 30 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_greater_than_or_equal_to_false(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'greater_than_or_equal_to', 'value': 31 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
     def test_less_than_or_equal_to_true(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'less_than_or_equal_to', 'value': 30 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_less_than_or_equal_to_false(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'less_than_or_equal_to', 'value': 29 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
     def test_less_than_true(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'less_than', 'value': 31 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_less_than_false(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'less_than', 'value': 30 }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
     def test_in_true(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'in', 'value': [28, 29, 30, 31] }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertTrue(result)
 
     def test_in_false(self):
         record = { 'name': 'Joe' , 'age': 30 }
         criteria = {'key': 'age', 'op': 'in', 'value': [28, 29, 31] }
-        result = matches_crit(record, criteria)
+        result = meets_crit(record, criteria)
         self.assertFalse(result)
 
 if __name__ == '__main__':
