@@ -1,6 +1,9 @@
 from typing import Dict, Any, List, Literal
 
-def combine_criteria(operator: Literal['AND', 'OR'], criteria_list: List[Dict[str, Any]]) -> Dict[str, Any]:
+def combine_criteria(
+    operator: Literal['AND', 'OR'],
+    criteria_list: List[Dict[str, Any]]
+) -> Dict[str, Any]:
     """
     Combine multiple criteria using AND or OR operator.
 

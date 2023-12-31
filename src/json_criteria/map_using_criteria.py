@@ -1,7 +1,11 @@
 from typing import Dict, Any, List, Callable
 from .internal import meets_crit
 
-def map_using_criteria(records: List[Dict[str, Any]], criteria: Dict[str, Any], func: Callable[[Dict[str, Any]], Dict[str, Any]]) -> List[Dict[str, Any]]:
+def map_using_criteria(
+    records: List[Dict[str, Any]],
+    criteria: Dict[str, Any],
+    func: Callable[[Dict[str, Any]], Dict[str, Any]]
+) -> List[Dict[str, Any]]:
     """
     Apply a specified function to each record that meets the given criteria.
 

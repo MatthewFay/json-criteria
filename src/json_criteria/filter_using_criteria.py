@@ -1,7 +1,10 @@
 from typing import Dict, Any, List
 from .internal import meets_crit
 
-def filter_using_criteria(records: List[Dict[str, Any]], criteria: Dict[str, Any]) -> List[Dict[str, Any]]:
+def filter_using_criteria(
+    records: List[Dict[str, Any]],
+    criteria: Dict[str, Any]
+) -> List[Dict[str, Any]]:
     """
     Filter a list of records using the given criteria.
 

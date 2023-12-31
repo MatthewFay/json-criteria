@@ -1,7 +1,10 @@
 from typing import Dict, Any, List
 from .internal import meets_crit
 
-def find_using_criteria(records: List[Dict[str, Any]], criteria: Dict[str, Any]) -> Dict[str, Any] | None:
+def find_using_criteria(
+    records: List[Dict[str, Any]],
+    criteria: Dict[str, Any]
+) -> Dict[str, Any] | None:
     """
     Find the first record that meets the given criteria. Returns `None` if none found.
 

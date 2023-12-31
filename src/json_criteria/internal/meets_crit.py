@@ -33,7 +33,7 @@ def meets_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
     if not isinstance(key, str) or not operator or value is None:
         raise ValueError(f'Invalid condition: {element}')
 
-    # Operator conditions
+    # Operator conditions - WIP
     if operator == 'equal_to':
         return record.get(key) == value
     if operator == 'not_equal_to':
