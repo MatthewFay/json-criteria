@@ -34,6 +34,8 @@ def meets_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
         raise ValueError(f'Invalid condition: {element}')
 
     # Operator conditions - WIP
+    # Change to dictionary where key is operator, value is compare function,
+    # and break out into another module.
     if operator == 'equal_to':
         return record.get(key) == value
     if operator == 'not_equal_to':
