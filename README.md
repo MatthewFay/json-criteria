@@ -313,10 +313,9 @@ from json_criteria import get_all_criteria
 # Define a user
 user = {'user_id': 1, 'name': 'Alice', 'age': 28, 'interests': ['Technology', 'Books'], 'purchased_products': ['Laptop']}
 
-# criteria list for products: 
-# 1. User has an interest in 'Technology' AND (User is older than 25 OR User has purchased a 'Laptop')
-# 2. User has an interest in 'Books' AND User has not purchased a 'Tablet'
+# criteria list for products:
 product_criteria_list = [
+    # User has an interest in 'Technology' AND (User is older than 25 OR User has purchased a 'Laptop')
     {'product_id': 10, 'AND': [
         {'key': 'interests', 'op': 'contains', 'value': 'Technology'},
         {'OR': [
@@ -324,6 +323,7 @@ product_criteria_list = [
             {'key': 'purchased_products', 'op': 'contains', 'value': 'Laptop'}
         ]}
     ]},
+    # User has an interest in 'Books' AND User has not purchased a 'Tablet'
     {'product_id': 11, 'AND': [
         {'key': 'interests', 'op': 'contains', 'value': 'Books'},
         {'key': 'purchased_products', 'op': 'not_contains', 'value': 'Tablet'}
