@@ -34,6 +34,8 @@ def meets_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
         raise ValueError(f'Invalid condition: {element}')
 
     # Operator conditions - WIP
+    # Change to dictionary where key is operator, value is compare function,
+    # and break out into another module.
     if operator == 'equal_to':
         return record.get(key) == value
     if operator == 'not_equal_to':
@@ -48,12 +50,20 @@ def meets_crit(record: Dict[str, Any], element: Dict[str, Any]) -> bool:
         return record.get(key) <= value
     if operator == 'in':
         return record.get(key) in value
+    if operator == 'not_in':
+        return record.get(key) not in value
     if operator == 'contains':
         return value in record.get(key)
+    if operator == 'not_contains':
+        return value not in record.get(key)
     if operator == 'starts_with':
         return record.get(key, '').startswith(value)
+    if operator == 'not_starts_with':
+        return not record.get(key, '').startswith(value)
     if operator == 'ends_with':
         return record.get(key, '').endswith(value)
+    if operator == 'not_ends_with':
+        return not record.get(key, '').endswith(value)
     # if operator == 'is_empty':
     #     return not bool(record.get(key))
     # if operator == 'is_not_empty':

@@ -4,7 +4,7 @@ version = "0.0.1-alpha"
 authors = [
   { name="Matthew Fay" },
 ]
-description = "WIP"
+description = "Python library designed for evaluating data against serializable JSON criteria"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
