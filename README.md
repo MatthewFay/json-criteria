@@ -92,9 +92,13 @@ Additional keys, such as `id` and `description`, can be included without impacti
 * `greater_than_or_equal_to`
 * `less_than_or_equal_to`
 * `in`
+* `not_in`
 * `contains`
+* `not_contains`
 * `starts_with`
+* `not_starts_with`
 * `ends_with`
+* `not_ends_with`
 * `matches_regex`
 
 These operators provide a comprehensive set of comparisons to handle a wide range of conditions in your criteria.
@@ -311,12 +315,12 @@ Given a record and a list of criteria, retrieve all criteria that the record mee
 from json_criteria import get_all_criteria
 
 # Define a user
-user = {'user_id': 1, 'name': 'Alice', 'age': 28, 'interests': ['Technology', 'Books'], 'purchased_products': ['Laptop']}
+user = {'name': 'Alice', 'age': 28, 'interests': ['Technology', 'Books'], 'purchased_products': ['Laptop']}
 
-# criteria list for products:
-product_criteria_list = [
+# criteria list:
+criteria_list = [
     # User has an interest in 'Technology' AND (User is older than 25 OR User has purchased a 'Laptop')
-    {'product_id': 10, 'AND': [
+    {'id': 10, 'AND': [
         {'key': 'interests', 'op': 'contains', 'value': 'Technology'},
         {'OR': [
             {'key': 'age', 'op': 'greater_than', 'value': 25},
@@ -324,14 +328,22 @@ product_criteria_list = [
         ]}
     ]},
     # User has an interest in 'Books' AND User has not purchased a 'Tablet'
-    {'product_id': 11, 'AND': [
+    {'id': 11, 'AND': [
         {'key': 'interests', 'op': 'contains', 'value': 'Books'},
         {'key': 'purchased_products', 'op': 'not_contains', 'value': 'Tablet'}
     ]}
 ]
 
-# Get all criteria that the user meets for products
-result = get_all_criteria(user, product_criteria_list)
+# Get all criteria that the user meets
+# `result` will be:
+# [{'id': 10, 'AND': [
+#     {'key': 'interests', 'op': 'contains', 'value': 'Technology'},
+#     {'OR': [
+#         {'key': 'age', 'op': 'greater_than', 'value': 25},
+#         {'key': 'purchased_products', 'op': 'contains', 'value': 'Laptop'}
+#     ]}
+# ]}]
+result = get_all_criteria(user, criteria_list)
 ```
 
 ### `meets_criteria`
@@ -341,38 +353,47 @@ Determine if a record meets the given criteria. This function provides a flexibl
 ```python
 from json_criteria import meets_criteria
 
-# Define a record
-record = {'user_type': 1, 'email': 'test@email.com', 'is_active': True, 'age': 30, 'department': 'Engineering'}
+# Define a record for a user
+user_record = {
+    'user_type': 1,
+    'email': 'test@email.com',
+    'is_active': True,
+    'age': 30,
+    'department': 'Engineering'
+}
 
-# criteria with three levels of nesting:
-# 1. User type is 1 AND (Email is 'test@email.com' OR (Is active AND Age is less than 40))
-# 2. Department is 'Engineering' AND (Is active OR Age is greater than or equal to 30)
-# 3. User type is not 2 AND Email does not end with 'xyz'
-criteria = {'AND': [
-    {'key': 'user_type', 'op': 'equal_to', 'value': 1},
-    {'OR': [
-        {'key': 'email', 'op': 'equal_to', 'value': 'test@email.com'},
-        {'AND': [
-            {'key': 'is_active', 'op': 'equal_to', 'value': True},
-            {'key': 'age', 'op': 'less_than', 'value': 40}
-        ]}
-    ]},
-    {'AND': [
-        {'key': 'department', 'op': 'equal_to', 'value': 'Engineering'},
+# Criteria Description:
+# - User type is 1
+# - AND (Email ends with '@email.com' OR (Is active AND Age is less than 40))
+# - AND (Department is 'Engineering' AND (Is active OR Age is greater than or equal to 30))
+# - AND (User type is not 2 AND Email does not end with '@test.com')
+criteria = {
+    'AND': [
+        {'key': 'user_type', 'op': 'equal_to', 'value': 1},
         {'OR': [
-            {'key': 'is_active', 'op': 'equal_to', 'value': True},
-            {'key': 'age', 'op': 'greater_than_or_equal_to', 'value': 30}
+            {'key': 'email', 'op': 'ends_with', 'value': '@email.com'},
+            {'AND': [
+                {'key': 'is_active', 'op': 'equal_to', 'value': True},
+                {'key': 'age', 'op': 'less_than', 'value': 40}
+            ]}
+        ]},
+        {'AND': [
+            {'key': 'department', 'op': 'equal_to', 'value': 'Engineering'},
+            {'OR': [
+                {'key': 'is_active', 'op': 'equal_to', 'value': True},
+                {'key': 'age', 'op': 'greater_than_or_equal_to', 'value': 30}
+            ]}
+        ]},
+        {'AND': [
+            {'key': 'user_type', 'op': 'not_equal_to', 'value': 2},
+            {'key': 'email', 'op': 'not_ends_with', 'value': '@test.com'}
         ]}
-    ]},
-    {'AND': [
-        {'key': 'user_type', 'op': 'not_equal_to', 'value': 2},
-        {'key': 'email', 'op': 'not_ends_with', 'value': 'xyz'}
-    ]}
-]}
+    ]
+}
 
-# Check if the record meets the specified criteria
+# Check if the user record meets the specified criteria
 # `result` will be True
-result = meets_criteria(record, criteria)
+result = meets_criteria(user_record, criteria)
 ```
 
 ## Contributing Guide
