@@ -315,7 +315,12 @@ Given a record and a list of criteria, retrieve all criteria that the record mee
 from json_criteria import get_all_criteria
 
 # Define a user
-user = {'name': 'Alice', 'age': 28, 'interests': ['Technology', 'Books'], 'purchased_products': ['Laptop']}
+user = {
+    'name': 'Alice',
+    'age': 28,
+    'interests': ['Technology', 'Books'],
+    'purchased_products': ['Laptop']
+}
 
 # criteria list:
 criteria_list = [
