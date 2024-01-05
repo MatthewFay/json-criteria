@@ -5,6 +5,7 @@ authors = [
   { name="Matthew Fay" },
 ]
 description = "Python library designed for evaluating data against serializable JSON criteria"
+keywords = ["json", "criteria", "persistence", "serialization", "serialized", "serializable", "rules", "decisions", "decision-making", "decision making", "conditions", "nested", "nested conditions", "operators", "logic", "eligibility", "dynamic adjustment", "data evaluation", "evaluation", "comparison", "compare", "adaptable", "flexible", "flexibility", "maintainable", "maintainability", "dependency-free"]
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
