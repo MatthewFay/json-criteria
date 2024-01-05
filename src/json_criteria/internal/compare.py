@@ -75,7 +75,8 @@ operator_functions = {
     'starts_with': compare_starts_with,
     'not_starts_with': compare_not_starts_with,
     'ends_with': compare_ends_with,
-    'not_ends_with': compare_not_ends_with
+    'not_ends_with': compare_not_ends_with,
+    'matches_regex': compare_matches_regex
 }
 
 def compare(record_value: Any, operator: str, value: Any) -> bool:
@@ -95,44 +96,3 @@ def compare(record_value: Any, operator: str, value: Any) -> bool:
         return operator_functions[operator](record_value, value)
 
     raise ValueError(f"Unsupported operator: {operator}")
-
-# if operator == 'is_empty':
-    #     return not bool(record.get(key))
-    # if operator == 'is_not_empty':
-    #     return bool(record.get(key))
-    # if operator == 'is_true':
-    #     return bool(record.get(key))
-    # if operator == 'is_false':
-    #     return not bool(record.get(key))
-    # if operator == 'is_null':
-    #     return record.get(key) is None
-    # if operator == 'is_not_null':
-    #     return record.get(key) is not None
-    # if operator == 'equals_ignore_case':
-    #     return record.get(key, '').lower() == value.lower()
-    # if operator == 'not_equals_ignore_case':
-    #     return record.get(key, '').lower() != value.lower()
-    # if operator == 'is_date':
-    #     try:
-    #         parsed_date = datetime.strptime(record.get(key, ''), '%Y-%m-%d')
-    #         return True
-    #     except ValueError:
-    #         return False
-    # if operator == 'date_equal_to':
-    #     try:
-    #         parsed_date = datetime.strptime(record.get(key, ''), '%Y-%m-%d')
-    #         return parsed_date == value
-    #     except ValueError:
-    #         return False
-    # if operator == 'date_before':
-    #     try:
-    #         parsed_date = datetime.strptime(record.get(key, ''), '%Y-%m-%d')
-    #         return parsed_date < value
-    #     except ValueError:
-    #         return False
-    # if operator == 'date_after':
-    #     try:
-    #         parsed_date = datetime.strptime(record.get(key, ''), '%Y-%m-%d')
-    #         return parsed_date > value
-    #     except ValueError:
-    #         return False

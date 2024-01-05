@@ -121,6 +121,43 @@ class TestMeetsCrit(unittest.TestCase):
         result = meets_crit(record, criteria)
         self.assertFalse(result)
 
+    def test_nested_three_levels(self):
+        user_record = {
+            'user_type': 1,
+            'email': 'test@email.com',
+            'is_active': True,
+            'age': 30,
+            'department': 'Engineering'
+        }
+
+        criteria = {
+            'AND': [
+                {'key': 'user_type', 'op': 'equal_to', 'value': 1},
+                {'OR': [
+                    {'key': 'email', 'op': 'ends_with', 'value': '@email.com'},
+                    {'AND': [
+                        {'key': 'is_active', 'op': 'equal_to', 'value': True},
+                        {'key': 'age', 'op': 'less_than', 'value': 40}
+                    ]}
+                ]},
+                {'AND': [
+                    {'key': 'department', 'op': 'equal_to', 'value': 'Engineering'},
+                    {'OR': [
+                        {'key': 'is_active', 'op': 'equal_to', 'value': True},
+                        {'key': 'age', 'op': 'greater_than_or_equal_to', 'value': 30}
+                    ]}
+                ]},
+                {'AND': [
+                    {'key': 'user_type', 'op': 'not_equal_to', 'value': 2},
+                    {'key': 'email', 'op': 'not_ends_with', 'value': '@test.com'}
+                ]}
+            ]
+        }
+
+        result = meets_crit(user_record, criteria)
+
+        self.assertTrue(result)
+
     def test_invalid_key(self):
         record = { 'id': 1 , 'email': 'test@email.com', 'is_active': True }
         criteria = {
